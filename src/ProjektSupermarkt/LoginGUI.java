@@ -52,20 +52,19 @@ public class LoginGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
             String username = nameField.getText();
-            char[] password = passwordField.getPassword();
-            String hashedPassword = hashPassword(password);
+            String hashedPassword = hashPassword(passwordField.getPassword()); // get and hash the pw
 
             if (login.loginUser(username, hashedPassword) != -1) {
                 uid = login.loginUser(username, hashedPassword);
-                textArea.setText("Login successful for user: " + username);
+                textArea.setText("Login successful for user: " + username + " uid: " + uid);
             } else {
                 textArea.setText("Login failed. Please try again.");
             }
             passwordField.setText(""); // Clear password field for security reasons
+
         } else if (e.getSource() == registerButton) {
             String username = nameField.getText();
-            char[] password = passwordField.getPassword();
-            String hashedPassword = hashPassword(password);
+            String hashedPassword = hashPassword(passwordField.getPassword()); // get and hash the pw
 
             login.registerUser(username, hashedPassword);
             passwordField.setText(""); // Clear password field for security reasons

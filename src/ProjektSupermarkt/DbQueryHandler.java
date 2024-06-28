@@ -23,10 +23,6 @@ public class DbQueryHandler {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,10 +37,9 @@ public class DbQueryHandler {
             preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                result = resultSet.getInt("uid");
-                return result;
+                return resultSet.getInt("uid");
             }
-
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
