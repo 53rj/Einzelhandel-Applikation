@@ -9,7 +9,7 @@ public class DbQueryHandler {
     private Connection con;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
-    private int result = -1;
+    private int result = 0;
 
     public DbQueryHandler() {
         con = DB.connect();

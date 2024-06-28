@@ -11,7 +11,7 @@ public class LoginGUI extends JFrame implements ActionListener {
     private JTextField nameField;
     private JPasswordField passwordField;
     private JPanel loginPanel;
-    private JButton loginButton, registerButton;
+    private JButton loginButton, registerButton, logoutButton;
     private JTextArea textArea;
     private Login login;
     private int uid;
@@ -36,6 +36,10 @@ public class LoginGUI extends JFrame implements ActionListener {
         loginPanel.add(loginButton);
         loginButton.addActionListener(this);
 
+        logoutButton = new JButton("Logout");
+        loginPanel.add(logoutButton);
+        logoutButton.addActionListener(this);
+
         textArea = new JTextArea(1, 20);
         textArea.setEditable(false); // To prevent editing
         loginPanel.add(textArea);
@@ -54,7 +58,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             String username = nameField.getText();
             String hashedPassword = hashPassword(passwordField.getPassword()); // get and hash the pw
 
-            if (login.loginUser(username, hashedPassword) != -1) {
+            if (login.loginUser(username, hashedPassword) != 0) {
                 uid = login.loginUser(username, hashedPassword);
                 textArea.setText("Login successful for user: " + username + " uid: " + uid);
             } else {
@@ -68,6 +72,9 @@ public class LoginGUI extends JFrame implements ActionListener {
 
             login.registerUser(username, hashedPassword);
             passwordField.setText(""); // Clear password field for security reasons
+        } else if (e.getSource() == logoutButton) {
+            uid = 0;
+            textArea.setText("Logout successful");
         }
     }
 
