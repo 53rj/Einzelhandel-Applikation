@@ -8,15 +8,15 @@ public class Login {
 
     }
 
-    public int registerUser(String username, String hashedPassword) {
+    public void registerUser(String username, String hashedPassword) {
         DbQueryHandler dbQueryHandler = new DbQueryHandler();
-        int result = dbQueryHandler.registerUser(this.getUsername(), this.gethashedPassword());
-        return result;
+        dbQueryHandler.registerUser(username, hashedPassword);
+
     }
 
     public int loginUser(String username, String hashedPassword) {
         DbQueryHandler dbQueryHandler = new DbQueryHandler();
-        int result = dbQueryHandler.loginUser(this.getUsername(), this.gethashedPassword());
+        int result = dbQueryHandler.loginUser(username, hashedPassword);
         return result;
     }
 

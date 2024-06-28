@@ -1,51 +1,53 @@
 package ProjektSupermarkt;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DbQueryHandler {
-    Connection con;
-    PreparedStatement preparedStatement;
-    ResultSet resultSet;
+    private Connection con;
+    private PreparedStatement preparedStatement;
+    private ResultSet resultSet;
+    private int result = -1;
 
     public DbQueryHandler() {
         con = DB.connect();
     }
 
-    public int registerUser(String username, String password) {
-        // Execute a query
-        String sql = "INSERT INTO user(name, password) VALUE('?','?')";
+    public void registerUser(String username, String password) {
+
+        String sql = "INSERT INTO user(name, password) VALUE(?,?)";
         try {
             preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, "username");
-            preparedStatement.setString(1, "password");
-            preparedStatement.executeQuery();
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            int result = -1;
-            return result;
         }
-        int result = loginUser(username, password);
-        return result;
+        try {
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int loginUser(String username, String password) {
-        String sql = "SELECT uid WHERE(name='?', password='?')";
+        String sql = "SELECT u.uid FROM user u WHERE name=? AND password=?";
         try {
             preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setString(1, "username");
-            preparedStatement.setString(1, "password");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
-
-            // Process the results
-            while (resultSet.next()) {
-                if (username == resultSet.getString("name") && password == resultSet.getString("password")) {
-                    return resultSet.getInt("uid");
-                }
+            if (resultSet.next()) {
+                result = resultSet.getInt("uid");
+                return result;
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        int result = -1;
         return result;
     }
 }
