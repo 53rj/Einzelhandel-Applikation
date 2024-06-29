@@ -14,7 +14,6 @@ public class LoginGUI extends JFrame implements ActionListener {
     private JButton loginButton, registerButton, logoutButton;
     private JTextArea textArea;
     private Login login;
-    private int uid;
 
     public LoginGUI(String titel) {
         super(titel);
@@ -48,10 +47,6 @@ public class LoginGUI extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
@@ -59,8 +54,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             String hashedPassword = hashPassword(passwordField.getPassword()); // get and hash the pw
 
             if (login.loginUser(username, hashedPassword) != 0) {
-                uid = login.loginUser(username, hashedPassword);
-                textArea.setText("Login successful for user: " + username + " uid: " + uid);
+                textArea.setText("Login successful for user: " + username);
             } else {
                 textArea.setText("Login failed. Please try again.");
             }
@@ -73,7 +67,7 @@ public class LoginGUI extends JFrame implements ActionListener {
             login.registerUser(username, hashedPassword);
             passwordField.setText(""); // Clear password field for security reasons
         } else if (e.getSource() == logoutButton) {
-            uid = 0;
+            login.logoutUser();
             textArea.setText("Logout successful");
         }
     }
